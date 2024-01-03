@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./dist/output.css">
+  <link rel="icon" href="UNPAM.png">
+  <link rel="manifest" href="manifest.json">
+  <script src="https://unpkg.com/feather-icons"></script>
+  <script>
+     if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then(function (registration) {
+            console.log(
+              "Service worker terdaftar dengan skop: ",
+              registration.scope
+            );
+          })
+          .catch(function (error) {
+            console.log("Service worker gagal terdaftar: ", error);
+          });
+      } else {
+        console.log("Browser tidak mendukung service worker");
+      }
+  </script>
+  <title>Unpam App</title>
+</head>
+<body class="h-screen">
+  <div class="h-5/6 w-full justify-between items-center flex flex-col">
+    <div class="w-full flex justify-end p-3 text-3xl">
+      <button id="sun" onclick="lightMode()" class="hidden"><i data-feather="sun"></i></button>
+      <button id="moon" onclick="darkMode()" class="text-blue-900"><i data-feather="moon"></i></button>
+    </div>
+    <div id="isi" class="flex flex-col justify-around items-center border-2 border-blue-900 text-3xl text-blue-900 h-3/4 w-3/4 rounded font-bold">
+      <a href="https://e-learning.unpam.ac.id/">E-Learning</a>
+      <a href="https://my.unpam.ac.id/beranda">MyUnpam</a>
+      <a href="https://event.unpam.ac.id/">Event</a>
+    </div>
+  </div>
+  <script>
+      feather.replace();
+  </script>
+  <script>
+    let sun = document.getElementById("sun")
+    let moon = document.getElementById("moon")
+    let body = document.body
+    let isi = document.getElementById("isi")
+    let data = [
+      {
+        sun:"hidden",
+        moon:"text-blue-900",
+        body:"h-screen",
+        isi:"flex flex-col justify-around items-center border-2 border-blue-900 text-3xl text-blue-900 h-3/4 w-3/4 rounded font-bold"
+      },{
+        sun:"text-white",
+        moon:"hidden",
+        body:"h-screen bg-blue-900",
+        isi:"flex flex-col justify-around items-center border-2 border-white text-3xl text-white h-3/4 w-3/4 rounded font-bold",
+      }]
+    
+    function lightMode () {
+      sun.className=data[0].sun
+      moon.className=data[0].moon
+      body.className=data[0].body
+      isi.className=data[0].isi
+      localStorage.setItem("mode","light")
+    }
+    
+    function darkMode (num) {
+      sun.className=data[1].sun
+      moon.className=data[1].moon
+      body.className=data[1].body
+      isi.className=data[1].isi
+      localStorage.setItem("mode","dark")
+    }
+    
+    let local = localStorage.getItem("mode")
+    if(!local) {
+      lightMode()
+    }
+    else if(local == "dark") {
+      darkMode()
+    }
+    else if(local == "light") {
+      lightMode()
+    }
+  </script>
+</body>
+</html>
